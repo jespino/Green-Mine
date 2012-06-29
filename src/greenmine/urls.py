@@ -18,6 +18,18 @@ from greenmine.views import backlog
 from greenmine.views import issues
 from greenmine.views import tasks
 
+from tastypie.api import Api
+from greenmine.api import *
+
+rest_api = Api(api_name='v1')
+rest_api.register(ProjectResource())
+rest_api.register(MilestoneResource())
+rest_api.register(UserStoryResource())
+rest_api.register(TaskResource())
+rest_api.register(DocumentResource())
+rest_api.register(QuestionResource())
+rest_api.register(WikiPageResource())
+
 
 api_urlpatterns = patterns('',
     url(r'^autocomplete/user/list/$', api.UserListApiView.as_view(), name='user-list'),
@@ -183,6 +195,7 @@ urlpatterns = patterns('',
 
     url(r"^", include(main_patterns)),
     url(r"^api/", include(api_urlpatterns, namespace='api')),
+    url(r"^rest_api/", include(rest_api.urls)),
 
     url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict, name='jsi18n'),
 )
